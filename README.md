@@ -1,53 +1,76 @@
-# Progetto Introduzione al Datamining
 
-## Calì Raffaele 
+---
 
-### Porting Polya Filter
+# Data Mining Introduction Project
 
-## Descrizione del Problema
+## Raffaele Calì
 
-La funzione Polya Filter implementa un nuovo metodo per filtrare le informazioni all'interno di reti complesse. Le reti complesse sono reti costituite da un gran numero di nodi interconnessi tra loro, come ad esempio le reti sociali o le reti di comunicazione. Gli autori della funzione propongono una metodologia di filtraggio ispirata all'urna di Pólya, il quale rappresenta un modello combinatorio guidato da un meccanismo di auto-rinforzo, che si basa su una famiglia di ipotesi nulle che possono essere calibrate per valutare quali archi sono statisticamente significativi rispetto all'eterogeneità propria di una rete.
+### Polya Filter Porting
 
-L'urna di Pólya è un modello probabilistico in cui una serie di palline (o "urne") di colori diversi vengono estratte e rimesse in altre urne che contengono palline dello stesso colore. In questo modo, il contenuto dell'urna cambia nel tempo, riflettendo l'evoluzione delle frequenze dei colori.
+## Problem Description
 
-Nel contesto della propagazione delle informazioni, l'urna di Pólya può essere utilizzata per modellizzare il modo in cui un'idea o un'informazione si diffonde all'interno di una rete. Ad esempio, si può immaginare che ogni nodo della rete abbia un colore associato (in base al contenuto dell'informazione) e che i nodi si scambino informazioni tra di loro, modificando così le frequenze dei colori. Gli autori della funzione utilizzano l'urna di Pólya per modellizzare la propagazione di informazioni all'interno di una rete sociale, in cui ogni nodo rappresenta un individuo e ogni arco rappresenta una connessione sociale. In particolare, il modello viene utilizzato per studiare il processo di "filtraggio" delle informazioni all'interno della rete, ovvero il modo in cui le informazioni vengono selezionate, modificate e trasmesse dai nodi della rete.
+The Polya Filter function implements a new method for filtering information within complex networks. Complex networks are networks composed of a large number of interconnected nodes, such as social networks or communication networks. The authors of the function propose a filtering methodology inspired by the Polya urn, which represents a combinatorial model driven by a self-reinforcement mechanism. This model is based on a family of null hypotheses that can be calibrated to assess which edges are statistically significant compared to the network's inherent heterogeneity.
 
-Lo studio dimostra l'efficacia del metodo attraverso una serie di esperimenti su reti complesse reali e artificiali. In particolare, si evidenzia come il metodo proposto riesca a migliorare significativamente la precisione della selezione dei nodi da cui diffondere l'informazione rispetto ad altri metodi tradizionali. Gli autori dimostrano che questo approccio può essere utilizzato per prevedere l'evoluzione della rete e identificare i nodi influenti nella diffusione delle informazioni. Inoltre, il modello può essere esteso per considerare l'influenza di nodi esterni alla rete e per prevedere l'effetto di diverse strategie di diffusione delle informazioni.
+The Polya urn is a probabilistic model where a series of balls (or "urns") of different colors are drawn and replaced in other urns containing balls of the same color. In this way, the contents of the urn change over time, reflecting the evolution of color frequencies.
 
-In pratica, il metodo prevede di assegnare un punteggio a ogni nodo della rete in base alla sua importanza relativa e di utilizzare questi punteggi per selezionare i nodi da cui diffondere l'informazione. Inoltre, il metodo tiene conto del fatto che l'importanza dei nodi può variare nel tempo, ad esempio a seguito di nuove informazioni che emergono nella rete.
+In the context of information propagation, the Polya urn can be used to model how an idea or information spreads within a network. For example, each node in the network can be imagined to have an associated color (based on the content of the information), and nodes exchange information with each other, thus changing the frequencies of the colors. The authors of the function use the Polya urn to model the propagation of information within a social network, where each node represents an individual, and each edge represents a social connection. Specifically, the model is used to study the process of "filtering" information within the network, i.e., how information is selected, modified, and transmitted by the nodes in the network.
 
-## Descrizione del Codice
+The study demonstrates the effectiveness of the method through a series of experiments on real and artificial complex networks. It highlights how the proposed method significantly improves the precision of node selection for information dissemination compared to traditional methods. The authors show that this approach can be used to predict network evolution and identify influential nodes in the spread of information. Additionally, the model can be extended to consider the influence of nodes external to the network and to predict the effect of different information dissemination strategies.
 
-La funzione prende in input una matrice di adiacenza "W" che rappresenta la rete, un parametro "a" libero del filtro, un livello di approssimazione "apr_lvl" e un flag "parallel" per abilitare o disabilitare l'elaborazione parallela.
+In practice, the method involves assigning a score to each node in the network based on its relative importance and using these scores to select the nodes from which to disseminate information. Moreover, the method accounts for the fact that the importance of nodes can vary over time, for instance, due to new information emerging in the network.
 
-- **Parametro "a"**: si riferisce alla probabilità che un nodo della rete decida di seguire un'altra fonte di informazione invece di continuare a seguire la sua attuale fonte.
-- **Matrice di adiacenza "W"**: rappresenta la rete.
-- **Livello di approssimazione "apr_lvl"**: specifica il livello di approssimazione.
-- **Flag "parallel"**: abilita o disabilita l'elaborazione parallela.
+## Code Description
 
-Il codice esegue diverse operazioni per calcolare i p-value. In primo luogo, controlla se la rete è simmetrica, estrae gli archi (i, j, w) dalla matrice di adiacenza W in base alla simmetria e ottiene l'elenco degli archi. Inoltre, calcola i gradi (k_in, k_out) e le forze (s_in, s_out) di ogni nodo utilizzando la forma asintotica se sono presenti pesi non interi.
+The function takes as input an adjacency matrix "W" representing the network, a free parameter "a" of the filter, an approximation level "apr_lvl," and a "parallel" flag to enable or disable parallel processing.
 
-Infine, la funzione calcola i p-value per ogni arco (i, j, w) utilizzando la funzione polya_cdf e restituisce il valore minimo di p. La funzione implementa la distribuzione cumulativa della Polya. Questa funzione calcola i p-value che possono essere approssimati e quelli che non possono essere approssimati utilizzando due forme diverse a seconda del valore di a: se a = 0 usa la distribuzione binomiale, altrimenti usa un'approssimazione asintotica.
+- **Parameter "a"**: Refers to the probability that a node in the network decides to follow another source of information instead of continuing to follow its current source.
+- **Adjacency matrix "W"**: Represents the network.
+- **Approximation level "apr_lvl"**: Specifies the level of approximation.
+- **Parallel flag "parallel"**: Enables or disables parallel processing.
 
-La funzione restituisce un vettore di valori "P" che rappresentano i p-value prescritti dal filtro di Polya per ciascun link della rete.
+The code performs various operations to calculate p-values. Firstly, it checks if the network is symmetric, extracts the edges (i, j, w) from the adjacency matrix W based on symmetry, and obtains the list of edges. Additionally, it calculates the degrees (k_in, k_out) and strengths (s_in, s_out) of each node using the asymptotic form if non-integer weights are present.
 
-## Come Utilizzarlo
+Finally, the function calculates the p-values for each edge (i, j, w) using the polya_cdf function and returns the minimum p-value. The function implements the cumulative distribution of Polya. It calculates p-values that can be approximated and those that cannot be approximated using two different forms depending on the value of a: if a = 0, it uses the binomial distribution; otherwise, it uses an asymptotic approximation.
 
-1. Aprire la cartella "idmdefinitivo" e avviare il progetto in R.
+The function returns a vector of values "P" representing the p-values prescribed by the Polya filter for each link in the network.
 
-### Librerie utilizzate
+## How to Use
+
+1. Open the "idmdefinitivo" folder and start the project in R.
+
+### Libraries Used
 
 - `igraph`
 - `mvtnorm`
 - `Matrix`
 
-### Esempio di Prova con Grafo Creato a Mano
+### Example with Manually Created Graph
 
 ```R
-# Creazione grafo vuoto
+# Create an empty graph
 g <- make_empty_graph()
-# Aggiunta dei nodi e degli archi
+# Add vertices and edges
 g <- add_vertices(g, 5)
 g <- add_edges(g, c(1,2, 1,3, 2,4, 3,4, 4,5), attr = list(weight = c(0.5, 0.8, 0.2, 1.0, 0.6)))
-# Chiamata della funzione
+# Call the function
 PF(adj_matrix, 4.5, 2, FALSE)
+```
+
+### Example with Graph from Network Repository
+
+```R
+# Graph contained in the file bio-CE-CX.edges
+# Read from file and create graph structure
+edge_list <- read.csv("bio-CE-CX.edges", header = FALSE, sep = " ")
+graph <- graph_from_data_frame(d = edge_list, directed = FALSE, vertices = NULL)
+# Create adjacency matrix
+adj_matrix <- as_adjacency_matrix(graph, type = "both", sparse = FALSE)
+# Call the PF function
+PF(adj_matrix, 4.5, 2, FALSE)
+```
+
+## Author
+
+Raffaele Calì
+
+---
